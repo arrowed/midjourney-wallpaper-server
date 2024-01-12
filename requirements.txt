@@ -1,4 +1,5 @@
 python-dotenv
 requests
 flask
-redis
+flask-socketio
+eventlet

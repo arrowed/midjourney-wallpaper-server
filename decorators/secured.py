@@ -34,7 +34,7 @@ def secured(app, per=300, invalid_token=on_over_limit):
         def secure_check(*args, **kwargs):
             token = get_token()
 
-            tokens = app.config['red'].get('token').decode('UTF-8').split(',')
+            tokens = app.config['allowed_keys']
             print('Got token from user ', token, ', wanted ', tokens)
 
             if not token in tokens:
