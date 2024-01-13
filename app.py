@@ -14,6 +14,7 @@ app.config.from_object(__name__)
 app.debug = os.getenv("DEBUG", False)
 
 app.config['allowed_keys'] = os.getenv("ALLOWED_KEYS","")
+app.config['base_folder'] = os.getenv("IMAGE_ROOT_FOLDER","../,images")
 app.config['JSON_AS_ASCII'] = False
 app.secret_key = os.getenv("APP_KEY")
 
@@ -34,10 +35,10 @@ def add_image():
     return Response(status=201)
 
 
-@app.route('/image/<string:filename>', methods=["GET"])
-@secured(app)
+@app.route('/image/<path:filename>', methods=["GET"])
 def get_image(filename):
-    return send_file(os.path.join("..\\mj_wallpaperiser", filename))
+    location = os.path.join(app.config['base_folder'], filename)
+    return send_file(location)
 
 @app.route('/topics', methods=["GET"])
 def get_topics():
