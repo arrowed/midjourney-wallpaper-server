@@ -89,7 +89,6 @@ def get_static_resource(name):
     return send_from_directory(os.path.join(app.config['webapp_base_folder'], "static"), name)
 @app.route('/static/js/<path:name>', methods=["GET"])
 def get_static_js_resource(name):
-    print("yeap")
     return send_from_directory(os.path.join(app.config['webapp_base_folder'], "static", "js"), name)
 @app.route('/static/css/<path:name>', methods=["GET"])
 def get_static_css_resource(name):
