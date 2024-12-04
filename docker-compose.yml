@@ -1,27 +1,27 @@
-version: '3'
+version: "3"
 services:
-  app:
-    build: 
+  wallpaper_server:
+    build:
       context: .
-      dockerfile: ./docker/dockerfile
+      dockerfile: ./dockerfile
     ports:
-    - 8080:8080
+      - 8080:8080
     volumes:
-    - ../mj_wallpaperiser/data:/app/data
+      - ../mj_wallpaperiser/data:/app/data
     links:
-    - redis
+      - redis
     depends_on:
-    - redis
+      - redis
     container_name: mj_slideshow
 
   redis:
     image: redis
     ports:
-    - 6379:6379
+      - 6379:6379
     environment:
-    - ALLOW_EMPTY_PASSWORD=yes
+      - ALLOW_EMPTY_PASSWORD=yes
     command: redis-server --save 20 1 --loglevel warning
-    volumes: 
+    volumes:
       - redis:/data
 
 volumes:
