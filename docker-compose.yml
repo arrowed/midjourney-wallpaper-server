@@ -4,15 +4,29 @@ services:
     build:
       context: .
       dockerfile: ./dockerfile
+    image: midjourney-wallpaper-server
     ports:
       - 8080:8080
+    networks:
+      - mj_hub
     volumes:
-      - ../mj_wallpaperiser/data:/app/data
-    links:
-      - redis
+      - ../mj_walls:/app/wallpapers
+      - .:/app/env
+      - ../midjourney-wallpaper-ui/build:/app/static_web
+
     depends_on:
       - redis
-    container_name: mj_slideshow
+
+  wallpaper_scraper:
+    build:
+      context: ../midjourney-scraper
+      dockerfile: ../midjourney-scraper/dockerfile
+    image: midjourney-wallpaper-scraper
+    networks:
+      - mj_hub
+    volumes:
+      - ../mj_walls:/app/wallpapers
+      - ../midjourney-scraper:/app/env
 
   redis:
     image: redis
@@ -23,7 +37,13 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     volumes:
       - redis:/data
+    networks:
+      - mj_hub
 
 volumes:
   redis:
     driver: local
+
+networks:
+  mj_hub:
+    driver: bridge
